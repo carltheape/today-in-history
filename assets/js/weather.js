@@ -106,6 +106,7 @@ var directions =
     function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
+        navigator.geolocation.getCurrentPosition(fetchPics);
     } else { 
         alert("Geolocation is not supported by this browser.");
     }
@@ -115,8 +116,7 @@ function showPosition(position) {
   $.getJSON(`http://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=imperial&appid=${keys[0].key}`, function(data){
   
   console.log(data);
-  $('#hi').append(data.main.temp_max + '&deg;');
-  $('#lo').append(data.main.temp_min + '&deg;');
+  $('#temps').append(data.main.temp + '&deg;');
   $('#img').html(`<img src="http://openweathermap.org/img/w/${data.weather["0"].icon}.png">`);
   $('#condition').append(data.weather["0"].description);
   $('#humid').append(`${data.main.humidity}% Humidity`);
@@ -134,7 +134,7 @@ function showPosition(position) {
     }
   }
   
-})
+});
 }
 
 getLocation();

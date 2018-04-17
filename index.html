@@ -8,60 +8,61 @@
   <meta charset="UTF-8">
   <title></title>
 </head>
-<body>
-  <div class="container">
-  <div id="history">
-    <h1>Today is </h1>
-    <h1 id="date"></h1>
+<body>
+    <div class="container">
+    <div id="history">
+      <h1>Today is </h1>
+      <h1 id="date"></h1>
+      
+        <div id="time">
+      <canvas id="clock"></canvas>
+      <div id="digital"></div>
+    </div>
+      
+    	<h2>
+    		Today in History:
+    	</h2>
+    	<ul id="list">
+    		
+    	</ul>
+    </div>
     
-      <div id="time">
-    <canvas id="clock"></canvas>
-    <div id="digital"></div>
-  </div>
-    
-  	<h2>
-  		Today in History:
-  	</h2>
-  	<ul id="list">
-  		
-  	</ul>
+    <div id="weather">  
+      <h2 id="location">
+        Your Weather today in
+      </h2>
+      <h6>(if you'll allow access)</h6>
+      <div id="weather-content">
+        <div id="temps">
+
+        </div>
+        <div id="img">
+          
+        </div>
+        <div id="condition">
+          
+        </div>
+        <div id="humid">
+          
+        </div>
+        <div id="wind">
+          
+        </div>
+        <div id="dir">
+          
+        </div>
+        <div id="background">
+        </div>
+      </div>
+      <div id="localPic">
+        
+      </div>
+    </div>
+    <div class="test">
+      
+    </div>
   </div>
   
-  <div id="weather">
-    <h2 id="location">
-      Your Weather today in
-    </h2>
-    <h6>(if you'll allow access)</h6>
-    <div id="weather-content">
-      <div class="temps">
-        <h3 id="hi">
-          High:
-        </h3>
-        <h3 id="lo">
-          Low:
-        </h3>
-      </div>
-    <div id="img">
-      
-    </div>
-    <div id="condition">
-      
-    </div>
-    <div id="humid">
-      
-    </div>
-    <div id="wind">
-      
-    </div>
-    <div id="dir">
-      
-    </div>
-    </div>
-  </div>
-  <div class="test">
-    
-  </div>
-</div>
 </body>
 
 <script
@@ -76,6 +77,9 @@
 
 <script type="text/javascript" src="./assets/js/events.js"></script>  
 
+<script type="text/javascript" src="./assets/js/flicker.js"></script> 
+ 
 <script type="text/javascript" src="./assets/js/weather.js"></script>  
+
 
 </html>
