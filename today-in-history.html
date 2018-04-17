@@ -2,6 +2,7 @@
 <html>
 <head>
 <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Iceberg" rel="stylesheet">
 <style type="text/css">
 
 *{
@@ -32,15 +33,26 @@
   }
   
   #history{
-    width: 50%;
+    width: calc((100% / 5)*2);
     float: left;
+  }
+  
+  #time{
+    width: calc((100% / 5));
+    float: left;
+    text-align: center;
+  }
+  
+  #digital {
+    font-size: 30px;
+    font-family: 'Iceberg', cursive;
   }
   
   #weather{
     position: relative;
     text-align: center;
 /*    font-size: 24px;*/
-    width: 50%;
+    width: calc((100% / 5)*2);
     float: left;
   }  
   
@@ -74,12 +86,6 @@
     width: 50%;
     padding: 0 15px; 
   }
-  
-/*  #feels{
-    position: absolute;
-    bottom: 35%;
-    width: 100%;
-  }*/
   
   #condition{
     position: absolute;
@@ -130,9 +136,15 @@
   		
   	</ul>
   </div>
+  
+  <div id="time">
+    <canvas id="clock"></canvas>
+    <div id="digital"></div>
+  </div>
+  
   <div id="weather">
-    <h2>
-      Your Weather today
+    <h2 id="location">
+      Your Weather today in
     </h2>
     <h6>(if you'll allow access)</h6>
     <div id="weather-content">
@@ -171,6 +183,11 @@
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
+<script type="text/javascript" src="api-keys.js"></script>
+
+<script type="text/javascript" src="vector.js"></script>
+
+<script type="text/javascript" src="clock.js"></script>  
 <script>
   var directions = 
     [
@@ -255,7 +272,7 @@
         max: 348.75 
       }
     ];
-    
+   
 var today = new Date();
 //Get today's date
 
@@ -288,11 +305,11 @@ function item() { return ev[Math.floor(Math.random()*ev.length)]};
 
 $.getJSON('http://allorigins.me/get?url=' + encodeURIComponent("https://en.wikipedia.org/wiki/" + n + "_" + today.getDate() + "") + '&callback=?', function(data){
 // console.log(data.contents);
-//go get the events for today's date using 
+//go get the events for today's date using a GET request
 
     var el = $( '<div></div>' );
     el.html(data.contents);
-    //stick the response in an div
+    //stick the response in an div to be able to access and read it easier
 
     let events = $('#Events', el).parent().next()[0];
     //find the Events portion of the response and grab the correct parent that holds all the data
@@ -343,20 +360,25 @@ $.getJSON('http://allorigins.me/get?url=' + encodeURIComponent("https://en.wikip
 }
 
 function showPosition(position) {
-  $.getJSON(`http://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=imperial&appid=9921088b316f4f97cbc44795923bfd27`, function(data){
+  $.getJSON(`http://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=imperial&appid=${keys[0].key}`, function(data){
   
   console.log(data);
-  $('#hi').append(data.main.temp_max);
-  $('#lo').append(data.main.temp_min);
+  $('#hi').append(data.main.temp_max + '&deg;');
+  $('#lo').append(data.main.temp_min + '&deg;');
   $('#img').html(`<img src="http://openweathermap.org/img/w/${data.weather["0"].icon}.png">`);
   $('#condition').append(data.weather["0"].description);
   $('#humid').append(`${data.main.humidity}% Humidity`);
   $('#wind').append(`Wind ${data.wind.speed} MPH`);
+  $('#location').append(` ${data.name}`)
   
   for (var i = 0; i < directions.length; i++) {
-    if (data.wind.deg > directions[i].min && data.wind.deg <= directions[i].max) {
+    
+    if (data.wind.deg > 348.75 || data.wind.deg <= 11.25 ) {
+      $('#dir').append("N");
+    }
+    else if (data.wind.deg > directions[i].min && data.wind.deg <= directions[i].max) {
       $('#dir').append(directions[i].name);
-      console.log(i, data.wind.deg, directions[i].min, directions[i].max)
+      // console.log(i, data.wind.deg, directions[i].min, directions[i].max)
     }
   }
   
@@ -371,7 +393,7 @@ $(function() {
     history();
 
     function history() {
-       setTimeout(history,10000);
+       setTimeout(history,12000);
        $('#list').html(item());
        //a recursive callback loop that will display a different event every 10 seconds
     }
